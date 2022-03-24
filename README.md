@@ -35,7 +35,7 @@ Ensure your virtual network IP space does not overlap with the subnets defined i
 
 ```terraform
 module "infrastructure" {
-  source = "git::https://github.com/StatCan/terraform-statcan-azure-cloud-native-environment-infrastructure.git?ref=$REF"
+  source = "git::https://github.com/statcan/terraform-statcan-azure-cloud-native-environment-infrastructure.git?ref=$REF"
 
   # ... your variable values
 }
