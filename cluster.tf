@@ -94,7 +94,7 @@ resource "azurerm_role_assignment" "cluster_subnet_network_add_aks" {
 # We are deploying a private cluster
 ###########################################################
 module "aks" {
-  source = "git::https://gitlab.k8s.cloud.statcan.ca/cloudnative/terraform/modules/terraform-azurerm-kubernetes-cluster.git?ref=v1.0.0"
+  source = "git::https://github.com/statcan/terraform-azurerm-kubernetes-cluster.git?ref=v1.0.0"
 
   prefix                   = var.prefix
   resource_group_name      = azurerm_resource_group.aks.name
@@ -253,7 +253,7 @@ resource "azurerm_monitor_diagnostic_setting" "kubernetes_audit" {
 # General node pool
 # Node pool for use by general workloads.
 module "nodepool_general" {
-  source = "git::https://gitlab.k8s.cloud.statcan.ca/cloudnative/terraform/modules/terraform-azurerm-kubernetes-cluster-nodepool.git?ref=v1.0.0"
+  source = "git::https://github.com/statcan/terraform-azurerm-kubernetes-cluster-nodepool.git?ref=v1.0.0"
 
   name                  = "general"
   kubernetes_cluster_id = module.aks.kubernetes_cluster_id
