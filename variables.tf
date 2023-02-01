@@ -85,6 +85,7 @@ variable "cluster_authorized_ip_ranges" {
 
 variable "cluster_ssh_key" {
   description = "SSH public key to access cluster nodes"
+  sensitive   = true
 }
 
 variable "availability_zones" {
