@@ -82,6 +82,7 @@ module "infrastructure" {
 
 ## History
 
-| Date       | Release     | Change          |
-| -----------| ------------| ----------------|
-| 2021-07-06 | 1.0.0       | Initial release |
+| Date       | Release     | Change                      |
+| -----------| ------------| ----------------------------|
+| 2021-07-06 | 1.0.0       | Initial release             |
+| 2023-02-02 | 1.0.1       | Specify sensitive variables |
