@@ -94,7 +94,7 @@ resource "azurerm_role_assignment" "cluster_subnet_network_add_aks" {
 # We are deploying a private cluster
 ###########################################################
 module "aks" {
-  source = "git::https://github.com/statcan/terraform-azurerm-kubernetes-cluster.git?ref=v1.0.0"
+  source = "git::https://github.com/statcan/terraform-azurerm-kubernetes-cluster.git?ref=v1.0.2"
 
   prefix                   = var.prefix
   resource_group_name      = azurerm_resource_group.aks.name
@@ -156,6 +156,9 @@ module "aks" {
   default_node_pool_enable_host_encryption = true
   default_node_pool_max_pods               = var.system_node_pool_max_pods
 
+  # CSI Drivers
+  storage_profile = var.storage_profile
+
   # SSH key to connect to the virtual machines
   ssh_key = var.cluster_ssh_key
 
@@ -170,17 +173,17 @@ module "aks" {
 
 # Create a storage account for audit logs
 resource "azurerm_storage_account" "audit" {
-  name                      = replace("${var.prefix}-sa-audit", "-", "")
-  location                  = var.location
-  resource_group_name       = azurerm_resource_group.aks.name
-  account_kind              = "StorageV2"
-  account_tier              = "Standard"
-  account_replication_type  = "ZRS"
-  access_tier               = "Hot"
-  enable_https_traffic_only = true
-  allow_blob_public_access  = false
-  min_tls_version           = "TLS1_2"
-  tags                      = var.tags
+  name                            = replace("${var.prefix}-sa-audit", "-", "")
+  location                        = var.location
+  resource_group_name             = azurerm_resource_group.aks.name
+  account_kind                    = "StorageV2"
+  account_tier                    = "Standard"
+  account_replication_type        = "ZRS"
+  access_tier                     = "Hot"
+  enable_https_traffic_only       = true
+  allow_nested_items_to_be_public = false
+  min_tls_version                 = "TLS1_2"
+  tags                            = var.tags
 
   depends_on = [
     azurerm_role_assignment.aks_rg_owner_ci
@@ -197,8 +200,8 @@ resource "azurerm_advanced_threat_protection" "audit" {
 }
 
 resource "azurerm_storage_account_network_rules" "audit" {
-  storage_account_name       = azurerm_storage_account.audit.name
-  resource_group_name        = azurerm_resource_group.aks.name
+  storage_account_id = azurerm_storage_account.audit.id
+
   default_action             = "Deny"
   virtual_network_subnet_ids = []
   bypass                     = ["Logging", "Metrics", "AzureServices"]
@@ -253,7 +256,7 @@ resource "azurerm_monitor_diagnostic_setting" "kubernetes_audit" {
 # General node pool
 # Node pool for use by general workloads.
 module "nodepool_general" {
-  source = "git::https://github.com/statcan/terraform-azurerm-kubernetes-cluster-nodepool.git?ref=v1.0.0"
+  source = "git::https://github.com/statcan/terraform-azurerm-kubernetes-cluster-nodepool.git?ref=v1.0.2"
 
   name                  = "general"
   kubernetes_cluster_id = module.aks.kubernetes_cluster_id

@@ -75,9 +75,9 @@ resource "azurerm_key_vault_access_policy" "ci_keys" {
   object_id = data.azurerm_client_config.current.object_id
 
   key_permissions = [
-    "get",
-    "create",
-    "delete"
+    "Get",
+    "Create",
+    "Delete"
   ]
 }
 
@@ -128,9 +128,9 @@ resource "azurerm_key_vault_access_policy" "des_keys" {
   object_id = azurerm_disk_encryption_set.disk_encryption.identity.0.principal_id
 
   key_permissions = [
-    "get",
-    "unwrapKey",
-    "wrapKey",
+    "Get",
+    "UnwrapKey",
+    "WrapKey",
   ]
 }
 
