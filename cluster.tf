@@ -94,7 +94,7 @@ resource "azurerm_role_assignment" "cluster_subnet_network_add_aks" {
 # We are deploying a private cluster
 ###########################################################
 module "aks" {
-  source = "git::https://github.com/statcan/terraform-azurerm-kubernetes-cluster.git?ref=v1.0.2"
+  source = "git::https://github.com/statcan/terraform-azurerm-kubernetes-cluster.git?ref=v1.0.3"
 
   prefix                   = var.prefix
   resource_group_name      = azurerm_resource_group.aks.name
