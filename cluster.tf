@@ -6,11 +6,7 @@
 resource "azurerm_resource_group" "aks" {
   name     = "${var.prefix}-rg-aks"
   location = var.location
-  tags     = var.tags
-
-  lifecycle {
-    ignore_changes = [tags.DateCreatedModified]
-  }
+  tags     = local.tags
 }
 
 # The principal running the terraform needs to be
@@ -47,7 +43,7 @@ resource "azurerm_user_assigned_identity" "aks" {
   name                = "${var.prefix}-msi-aks"
   resource_group_name = azurerm_resource_group.aks.name
   location            = var.location
-  tags                = var.tags
+  tags                = local.tags
 }
 
 ###########################################################
@@ -94,7 +90,7 @@ resource "azurerm_role_assignment" "cluster_subnet_network_add_aks" {
 # We are deploying a private cluster
 ###########################################################
 module "aks" {
-  source = "git::https://github.com/statcan/terraform-azurerm-kubernetes-cluster.git?ref=v1.0.3"
+  source = "git::https://github.com/statcan/terraform-azurerm-kubernetes-cluster.git?ref=v1.0.4"
 
   prefix                   = var.prefix
   resource_group_name      = azurerm_resource_group.aks.name
@@ -163,7 +159,7 @@ module "aks" {
   ssh_key = var.cluster_ssh_key
 
   # Tags
-  tags = var.tags
+  tags = local.tags
 
   depends_on = [
     azurerm_role_assignment.cluster_subnet_network_add_aks,
@@ -183,15 +179,11 @@ resource "azurerm_storage_account" "audit" {
   enable_https_traffic_only       = true
   allow_nested_items_to_be_public = false
   min_tls_version                 = "TLS1_2"
-  tags                            = var.tags
+  tags                            = local.tags
 
   depends_on = [
     azurerm_role_assignment.aks_rg_owner_ci
   ]
-
-  lifecycle {
-    ignore_changes = [tags.DateCreatedModified]
-  }
 }
 
 resource "azurerm_advanced_threat_protection" "audit" {
@@ -256,7 +248,7 @@ resource "azurerm_monitor_diagnostic_setting" "kubernetes_audit" {
 # General node pool
 # Node pool for use by general workloads.
 module "nodepool_general" {
-  source = "git::https://github.com/statcan/terraform-azurerm-kubernetes-cluster-nodepool.git?ref=v1.0.2"
+  source = "git::https://github.com/statcan/terraform-azurerm-kubernetes-cluster-nodepool.git?ref=v1.0.3"
 
   name                  = "general"
   kubernetes_cluster_id = module.aks.kubernetes_cluster_id
@@ -278,5 +270,5 @@ module "nodepool_general" {
   enable_host_encryption = true
   max_pods               = var.general_node_pool_max_pods
 
-  tags = var.tags
+  tags = local.tags
 }

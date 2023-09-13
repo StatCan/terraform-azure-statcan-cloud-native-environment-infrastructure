@@ -44,7 +44,7 @@ module "infrastructure" {
 ## Variables Values
 
 | Name                                      | Type         | Required | Value                                                                          |
-|-------------------------------------------|--------------|----------|--------------------------------------------------------------------------------|
+| ----------------------------------------- | ------------ | -------- | ------------------------------------------------------------------------------ |
 | prefix                                    | string       | yes      | Prefix for Azure resources created by the module                               |
 | location                                  | string       | yes      | Azure region where to deploy the Azure resources                               |
 | tags                                      | map(string)  | no       | Azure tags assigned to Azure resources                                         |
@@ -82,7 +82,10 @@ module "infrastructure" {
 
 ## History
 
-| Date       | Release     | Change                      |
-| -----------| ------------| ----------------------------|
-| 2021-07-06 | 1.0.0       | Initial release             |
-| 2023-02-02 | 1.0.1       | Specify sensitive variables |
+| Date       | Release | Change                                         |
+| ---------- | ------- | ---------------------------------------------- |
+| 2021-07-06 | 1.0.0   | Initial release                                |
+| 2023-02-02 | 1.0.1   | Specify sensitive variables                    |
+| 2023-07-31 | 1.0.2   | Leverage AKS managed blob-csi driver           |
+| 2023-07-31 | 1.0.3   | Fix load_balancer_sku case                     |
+| 2023-09-13 | 1.0.4   | Implement tagging strategy for Azure resources |
