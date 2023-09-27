@@ -76,6 +76,7 @@ resource "azurerm_key_vault_access_policy" "ci_keys" {
 
   key_permissions = [
     "Get",
+    "GetRotationPolicy",
     "Create",
     "Delete"
   ]
@@ -129,7 +130,6 @@ resource "azurerm_key_vault_access_policy" "des_keys" {
 
   key_permissions = [
     "Get",
-    "GetRotationPolicy",
     "UnwrapKey",
     "WrapKey",
   ]
