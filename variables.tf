@@ -71,9 +71,9 @@ variable "infrastructure_pipeline_allowed_ip_ranges" {
 
 ### Cluster
 variable "cluster_sku_tier" {
-  description = "SKU Tier for the cluster (\"Paid\" is preferred)"
+  description = "SKU Tier for the cluster (\"Standard\" is preferred)"
 
-  default = "Paid"
+  default = "Standard"
 }
 
 variable "cluster_authorized_ip_ranges" {
